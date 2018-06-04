@@ -12,6 +12,13 @@
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
 				</el-form-item>
+				<el-form-item label="每页数量" label-width="20" >
+			    <el-select v-model="filters.pageSize" value="20">
+				<el-option label="20" value="20"></el-option>
+				<el-option label="50" value="50"></el-option>
+				<el-option label="100" value="100"></el-option>
+			    </el-select>
+		        </el-form-item>
 			</el-form>
 		</el-col>
 
@@ -19,24 +26,44 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column type="index" width="60">
+			<el-table-column  prop="category" label="类别" width="80">
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
+			<el-table-column  prop="fundId" label="基金代码" width="100">
 			</el-table-column>
-			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
+			<el-table-column prop="fundName" label="基金名称" width="200" sortable>
 			</el-table-column>
-			<el-table-column prop="age" label="年龄" width="100" sortable>
+			<el-table-column prop="calDate" label="计算日期" width="120"  sortable>
 			</el-table-column>
-			<el-table-column prop="birth" label="生日" width="120" sortable>
+			<el-table-column prop="netAssetValue" label="单位净值" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="addr" label="地址" min-width="180" sortable>
+			<el-table-column prop="accumulative" label="累计净值" width="120" sortable>
 			</el-table-column>
-			<el-table-column label="操作" width="150">
+			<el-table-column prop="oneday" label="日增长率" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="oneweek" label="1周" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="onemonth" label="1月" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="threemonth" label="3月" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="sixmonth" label="6月" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="oneyear" label="1年" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="twoyear" label="2年" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="threeyear" label="3年" width="120" sortable>
+		    </el-table-column>
+			<el-table-column prop="thisyear" label="今年" width="120" sortable>
+			</el-table-column>
+			<el-table-column prop="setup" label="成立以来" width="120" sortable>
+			</el-table-column> 
+			<!-- <el-table-column label="操作" width="150">
 				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
-			</el-table-column>
+			</el-table-column> -->
 		</el-table>
 
 		<!--工具条-->
@@ -168,15 +195,15 @@
 			//获取用户列表
 			getUsers() {
 				let para = {
-					page: this.page,
-					name: this.filters.name
+					pageSize:50,
+					pageNo: this.page
 				};
 				this.listLoading = true;
 				//NProgress.start();
 				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
 					this.listLoading = false;
+					this.total = res.data.pairs.dat.total;
+					this.users = res.data.pairs.dat.list;
 					//NProgress.done();
 				});
 			},

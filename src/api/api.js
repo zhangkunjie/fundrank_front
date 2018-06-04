@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-let base = '';
+let base = 'http://localhost:8070/fundrank';
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
 
-export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
+//export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
+export const getUserListPage = params => { return axios.post(`${base}/fundrank/findPage/${params.pageSize}/${params.pageNo}`, {}); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
 

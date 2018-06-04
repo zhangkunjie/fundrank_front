@@ -19,7 +19,6 @@ export default {
     mock.onGet('/error').reply(500, {
       msg: 'failure'
     });
-
     //登录
     mock.onPost('/login').reply(config => {
       let {username, password} = JSON.parse(config.data);
@@ -43,6 +42,7 @@ export default {
       });
     });
 
+  
     //获取用户列表
     mock.onGet('/user/list').reply(config => {
       let {name} = config.params;
@@ -58,6 +58,7 @@ export default {
         }, 1000);
       });
     });
+
 
     //获取用户列表（分页）
     mock.onGet('/user/listpage').reply(config => {
