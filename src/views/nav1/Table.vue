@@ -3,11 +3,77 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+        <el-form-item label="类型">
+			    <el-select v-model="filters.category" value="(gp,hh,hh,zq,zs,bb,qdii,lof)" v-on:change="getUsers()"  style="width:80px">
+				<el-option label="全部" value="'gp','hh','hh','zq','zs','bb','qdii','lof'"></el-option>
+        <el-option label="股票" value="'gp'"></el-option>
+				<el-option label="混合" value="'hh'"></el-option>
+				<el-option label="债券" value="'zq'"></el-option>
+				<el-option label="指数" value="'zs'"></el-option>
+				<el-option label="保本" value="'bb'"></el-option>
+				<el-option label="qdii" value="'qdii'"></el-option>
+				<el-option label="lof" value="'lof'"></el-option>
+			  </el-select>
+		    </el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minOnemonth" placeholder="月最小" style="width:70px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxOnemonth" placeholder="月最大" style="width:70px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input  v-model="filters.minThreemonth" placeholder="3月最小" style="width:70px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxThreemonth" placeholder="3月最大" style="width:75px"></el-input>
+				</el-form-item>
+          <el-form-item>
+					<el-input   v-model="filters.minSixmonth" placeholder="6月最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxSixmonth"  placeholder="6月最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minOneyear"  placeholder="1年最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxOneyear" placeholder="1年最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minTwoyear" placeholder="2年最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxTwoyear" placeholder="2年最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minThreeyear" placeholder="3年最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxThreeyear" placeholder="3年最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minThisyear" placeholder="今年最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxThisyear"  placeholder="今年最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input  v-model="filters.minSetup" placeholder="成立最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxSetup" placeholder="成立最大" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.minScore" placeholder="得分最小" style="width:75px"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.maxScore" placeholder="得分最大" style="width:75px"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+				</el-form-item>
+        <el-form-item>
+					<el-button type="primary" @click="resetForm('filters')">重置</el-button>
 				</el-form-item>
 				<!-- <el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
@@ -27,37 +93,39 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @sort-change="sortChange" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column  prop="category" label="类别" width="80">
+			<el-table-column  prop="category" label="类别">
 			</el-table-column>
-			<el-table-column  prop="fundId" label="基金代码" width="100">
+			<el-table-column  prop="fundId" label="基金代码" >
 			</el-table-column>
-			<el-table-column prop="fundName" label="基金名称" width="200">
+			<el-table-column prop="fundName" label="基金名称" >
 			</el-table-column>
-			<el-table-column prop="calDate" label="计算日期" width="120" >
+			<el-table-column prop="calDate" label="计算日期" >
 			</el-table-column>
-			<el-table-column prop="netAssetValue" label="单位净值" width="120"  sortable='custom'>
+			<el-table-column prop="netAssetValue" label="单位净值"  sortable='custom'>
 			</el-table-column>
-			<el-table-column prop="accumulative" label="累计净值" width="120" sortable>
+			<el-table-column prop="accumulative" label="累计净值"  sortable>
 			</el-table-column>
-			<el-table-column prop="oneday" label="日增长率" width="120" sortable>
+			<el-table-column prop="oneday" label="日增长率"  sortable>
 			</el-table-column>
-			<el-table-column prop="oneweek" label="1周" width="120" sortable>
+			<el-table-column prop="oneweek" label="1周"  sortable>
 			</el-table-column>
-			<el-table-column prop="onemonth" label="1月" width="120" sortable>
+			<el-table-column prop="onemonth" label="1月"  sortable>
 			</el-table-column>
-			<el-table-column prop="threemonth" label="3月" width="120" sortable>
+			<el-table-column prop="threemonth" label="3月"  sortable>
 			</el-table-column>
-			<el-table-column prop="sixmonth" label="6月" width="120" sortable>
+			<el-table-column prop="sixmonth" label="6月"  sortable>
 			</el-table-column>
-			<el-table-column prop="oneyear" label="1年" width="120" sortable>
+			<el-table-column prop="oneyear" label="1年"  sortable>
 			</el-table-column>
-			<el-table-column prop="twoyear" label="2年" width="120" sortable>
+			<el-table-column prop="twoyear" label="2年"  sortable>
 			</el-table-column>
-			<el-table-column prop="threeyear" label="3年" width="120" sortable>
+			<el-table-column prop="threeyear" label="3年" sortable>
 		    </el-table-column>
-			<el-table-column prop="thisyear" label="今年" width="120" sortable>
+			<el-table-column prop="thisyear" label="今年"  sortable>
 			</el-table-column>
-			<el-table-column prop="setup" label="成立以来" width="120" sortable>
+			<el-table-column prop="setup" label="成立以来"  sortable>
+			</el-table-column> 
+      <el-table-column prop="score" label="得分"  sortable>
 			</el-table-column> 
 			<!-- <el-table-column label="操作" width="150">
 				<template scope="scope">
@@ -147,8 +215,8 @@ export default {
   data() {
     return {
       filters: {
-        name: "",
-        pageSize: 15
+        pageSize: 15,
+        category: "'gp','hh','hh','zq','zs','bb','qdii','lof'"
       },
       users: [],
       total: 0,
@@ -195,13 +263,36 @@ export default {
       this.page = val;
       this.getUsers();
     },
+    //清空form
+    resetForm:function(formName) {
+        this.$refs[formName].resetFields();
+      },
     //获取用户列表
     getUsers() {
       let para = {
         pageSize: this.filters.pageSize == null ? 15 : this.filters.pageSize,
         pageNo: this.page,
-        orderColumn:this.orderColumn,
-        orderBy:this.orderBy
+        category: this.filters.category,
+        orderColumn: this.orderColumn,
+        orderBy: this.orderBy,
+        minOnemonth: this.filters.minOnemonth,
+        maxOnemonth: this.filters.maxOnemonth,
+        minThreemonth: this.filters.minThreemonth,
+        maxThreemonth: this.filters.maxThreemonth,
+        minSixmonth: this.filters.minSixmonth,
+        maxSixmonth: this.filters.maxSixmonth,
+        minOneyear: this.filters.minOneyear,
+        maxOneyear: this.filters.maxOneyear,
+        minTwoyear: this.filters.minTwoyear,
+        maxTwoyear: this.filters.maxTwoyear,
+        minThreeyear: this.filters.minThreeyear,
+        maxThreeyear: this.filters.maxThreeyear,
+        minThisyear: this.filters.minThisyear,
+        maxThisyear: this.filters.maxThisyear,
+        minSetup: this.filters.minSetup,
+        maxSetup: this.filters.maxSetup,
+        minScore: this.filters.minScore,
+        maxScore: this.filters.maxScore
       };
       this.listLoading = true;
       //NProgress.start();
@@ -216,7 +307,7 @@ export default {
     //表格服务端排序
     sortChange: function(column, prop, order) {
       this.orderColumn = column.prop;
-      this.orderBy= column.order=="ascending"?"asc":"desc"
+      this.orderBy = column.order == "ascending" ? "asc" : "desc";
       this.getUsers();
     },
     //删除
